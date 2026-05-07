@@ -1,7 +1,6 @@
 package com.loopers.application.user;
 
 import com.loopers.domain.user.UserCommand;
-import com.loopers.domain.user.UserEntity;
 import com.loopers.domain.user.UserInfo;
 import com.loopers.domain.user.UserService;
 import com.loopers.support.error.CoreException;

@@ -1,6 +1,5 @@
 package com.loopers.interfaces.api.user;
 
-import com.loopers.application.example.ExampleInfo;
 import com.loopers.application.user.UserCriteria;
 import com.loopers.application.user.UserResult;
 import jakarta.validation.constraints.Email;

@@ -3,7 +3,6 @@ package com.loopers.interfaces.api;
 import com.loopers.domain.user.UserCommand;
 import com.loopers.domain.user.UserEntity;
 import com.loopers.domain.user.UserRepository;
-import com.loopers.interfaces.api.example.ExampleV1Dto;
 import com.loopers.interfaces.api.user.UserV1Dto;
 import com.loopers.utils.DatabaseCleanUp;
 import org.junit.jupiter.api.*;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

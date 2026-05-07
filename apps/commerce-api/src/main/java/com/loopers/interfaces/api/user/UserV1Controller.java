@@ -1,13 +1,9 @@
 package com.loopers.interfaces.api.user;
 
-import com.loopers.application.example.ExampleFacade;
-import com.loopers.application.example.ExampleInfo;
 import com.loopers.application.user.UserCriteria;
 import com.loopers.application.user.UserFacade;
 import com.loopers.application.user.UserResult;
 import com.loopers.interfaces.api.ApiResponse;
-import com.loopers.interfaces.api.example.ExampleV1ApiSpec;
-import com.loopers.interfaces.api.example.ExampleV1Dto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
