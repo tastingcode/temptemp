@@ -1,6 +1,5 @@
-package com.loopers.application.user;
+package com.loopers.application.point;
 
-import com.loopers.domain.point.PointCommand;
 import com.loopers.domain.point.PointInfo;
 import com.loopers.domain.point.PointService;
 import com.loopers.domain.user.UserInfo;
@@ -13,20 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
-public class UserFacade {
+public class PointFacade {
+
 	private final UserService userService;
 	private final PointService pointService;
 
-	@Transactional
-	public UserResult joinUser(UserCriteria.Join criteria){
-		UserInfo userInfo = userService.create(criteria.toUserCreate());
-		PointInfo pointInfo = pointService.init(new PointCommand.Init(userInfo.id()));
-
-		return UserResult.of(userInfo,pointInfo);
-	}
-
 	@Transactional(readOnly = true)
-	public UserResult getUser(UserCriteria.Get criteria) {
+	public PointResult findPoint(PointCriteria.Get criteria){
 		UserInfo userInfo = userService.findUser(criteria.toUserFind()).orElseThrow(() -> new CoreException(
 				ErrorType.NOT_FOUND, "사용자를 찾을 수 없습니다: " + criteria.userId()
 		));
@@ -35,6 +27,17 @@ public class UserFacade {
 				ErrorType.NOT_FOUND, "사용자를 찾을 수 없습니다: " + criteria.userId()
 		));
 
-		return UserResult.of(userInfo, pointInfo);
+		return PointResult.from(pointInfo);
 	}
+
+	@Transactional
+	public PointResult chargePoint(PointCriteria.Charge criteria){
+		UserInfo userInfo = userService.findUser(criteria.toUserFind()).orElseThrow(() -> new CoreException(
+				ErrorType.NOT_FOUND, "사용자를 찾을 수 없습니다: " + criteria.userId()
+		));
+
+		PointInfo pointInfo = pointService.charge(criteria.toPointCharge());
+		return PointResult.from(pointInfo);
+	}
+
 }

@@ -17,8 +17,8 @@ public class UserV1Controller implements UserV1ApiSpec {
 
 	@PostMapping("")
 	@Override
-	public ApiResponse<UserV1Dto.UserResponse> joinUser(@Valid @RequestBody UserV1Dto.CreateRequest createRequest) {
-		UserCriteria.Create criteria = createRequest.toCriteria();
+	public ApiResponse<UserV1Dto.UserResponse> joinUser(@Valid @RequestBody UserV1Dto.JoinRequest request) {
+		UserCriteria.Join criteria = request.toCriteria();
 		UserResult userResult = userFacade.joinUser(criteria);
 		UserV1Dto.UserResponse response = UserV1Dto.UserResponse.from(userResult);
 		return ApiResponse.success(response);

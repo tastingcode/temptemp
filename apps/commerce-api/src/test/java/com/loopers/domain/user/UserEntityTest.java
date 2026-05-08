@@ -32,7 +32,7 @@ class UserEntityTest {
 			UserCommand.Create command = new UserCommand.Create(loginId, gender, birth, email);
 
 			assertThrows(CoreException.class, () -> {
-				UserEntity.create(command);
+				UserEntity.from(command);
 			});
 		}
 
@@ -50,7 +50,7 @@ class UserEntityTest {
 			UserCommand.Create command = new UserCommand.Create(loginId, gender, birth, email);
 
 			assertThrows(CoreException.class, () -> {
-				UserEntity.create(command);
+				UserEntity.from(command);
 			});
 		}
 
@@ -69,7 +69,7 @@ class UserEntityTest {
 
 
 			assertThrows(CoreException.class, () -> {
-				UserEntity.create(command);
+				UserEntity.from(command);
 			});
 		}
 

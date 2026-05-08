@@ -1,5 +1,7 @@
 package com.loopers.interfaces.api;
 
+import com.loopers.domain.point.PointEntity;
+import com.loopers.domain.point.PointRepository;
 import com.loopers.domain.user.UserCommand;
 import com.loopers.domain.user.UserEntity;
 import com.loopers.domain.user.UserRepository;
@@ -23,17 +25,20 @@ public class UserV1ApiE2ETest {
 	private final TestRestTemplate testRestTemplate;
 	private final DatabaseCleanUp databaseCleanUp;
 	private final UserRepository userRepository;
+	private final PointRepository pointRepository;
 
 
 	@Autowired
 	public UserV1ApiE2ETest(
 			TestRestTemplate testRestTemplate,
 			DatabaseCleanUp databaseCleanUp,
-			UserRepository userRepository
+			UserRepository userRepository,
+			PointRepository pointRepository
 	) {
 		this.testRestTemplate = testRestTemplate;
 		this.databaseCleanUp = databaseCleanUp;
 		this.userRepository = userRepository;
+		this.pointRepository = pointRepository;
 	}
 
 	@AfterEach
@@ -54,7 +59,7 @@ public class UserV1ApiE2ETest {
 		@Test
 		public void 회원_가입이_성공할_경우_생성된_유저_정보를_응답으로_반환한다() {
 			//given
-			UserV1Dto.CreateRequest createRequest = new UserV1Dto.CreateRequest(
+			UserV1Dto.JoinRequest request = new UserV1Dto.JoinRequest(
 					"asd123",
 					"MALE",
 					"2020-12-12",
@@ -67,14 +72,15 @@ public class UserV1ApiE2ETest {
 			ResponseEntity<ApiResponse<UserV1Dto.UserResponse>> response = testRestTemplate.exchange(
 					ENDPOINT,
 					HttpMethod.POST,
-					new HttpEntity<>(createRequest),
+					new HttpEntity<>(request),
 					responseType
 			);
 
 			//then
 			Assertions.assertAll(
 					() -> assertTrue(response.getStatusCode().is2xxSuccessful()),
-					() -> assertThat(response.getBody().data().loginId()).isEqualTo(createRequest.loginId())
+					() -> assertThat(response.getBody().data().loginId()).isEqualTo(request.loginId()),
+					() -> assertThat(response.getBody().data().point()).isEqualTo(0L)
 			);
 
 		}
@@ -83,7 +89,7 @@ public class UserV1ApiE2ETest {
 		@Test
 		public void 회원_가입_시에_성별이_없을_경우_400_Bad_Request_응답을_반환한다() {
 			//given
-			UserV1Dto.CreateRequest request = new UserV1Dto.CreateRequest("asd123", null, "2020-12-12", "asd123@asd.com");
+			UserV1Dto.JoinRequest request = new UserV1Dto.JoinRequest("asd123", null, "2020-12-12", "asd123@asd.com");
 			ParameterizedTypeReference<ApiResponse<UserV1Dto.UserResponse>> responseType = new ParameterizedTypeReference<>() {
 			};
 
@@ -115,8 +121,11 @@ public class UserV1ApiE2ETest {
 		public void 내_정보_조회에_성공할_경우_해당하는_유저_정보를_응답으로_반환한다() {
 		    //given
 			UserCommand.Create command = new UserCommand.Create("asd123", "MALE", "2020-12-12", "asd123@asd.com");
-			UserEntity user = UserEntity.create(command);
+			UserEntity user = UserEntity.from(command);
 			UserEntity savedUser = userRepository.save(user);
+
+			PointEntity point = PointEntity.from(savedUser.getId());
+			pointRepository.save(point);
 
 			ParameterizedTypeReference<ApiResponse<UserV1Dto.UserResponse>> responseType = new ParameterizedTypeReference<>() {};
 			HttpHeaders headers = new HttpHeaders();

@@ -90,7 +90,7 @@ public class UserServiceIT {
 		public void 해당_ID_의_회원이_존재할_경우_회원_정보가_반환된다() {
 			//given
 			UserCommand.Create command = new UserCommand.Create("asd123", "MALE", "2020-12-12", "asd123@asd.com");
-			UserEntity user = UserEntity.create(command);
+			UserEntity user = UserEntity.from(command);
 
 			//when
 			UserEntity savedUser = userRepository.save(user);

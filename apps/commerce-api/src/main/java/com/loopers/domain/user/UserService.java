@@ -23,7 +23,7 @@ public class UserService {
 			throw new CoreException(ErrorType.CONFLICT, "이미 가입된 이메일입니다.");
 		}
 
-		UserEntity user = UserEntity.create(command);
+		UserEntity user = UserEntity.from(command);
 
 		return UserInfo.from(userRepository.save(user));
 	}

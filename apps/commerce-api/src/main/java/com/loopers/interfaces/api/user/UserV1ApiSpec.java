@@ -14,7 +14,7 @@ public interface UserV1ApiSpec {
     )
     ApiResponse<UserV1Dto.UserResponse> joinUser(
         @Schema(name = "회원가입 요청", description = "회원가입에 필요한 사용자 정보")
-        UserV1Dto.CreateRequest createRequest
+		UserV1Dto.JoinRequest joinRequest
     );
 
 	@Operation(

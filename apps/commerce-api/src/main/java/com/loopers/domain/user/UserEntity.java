@@ -21,7 +21,7 @@ public class UserEntity extends BaseEntity {
 	private Email email;
 
 
-	public static UserEntity create(UserCommand.Create command){
+	public static UserEntity from(UserCommand.Create command){
 		UserEntity userEntity = new UserEntity();
 
 		userEntity.loginId = command.toLoginId();
